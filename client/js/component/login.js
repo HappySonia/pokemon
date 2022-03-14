@@ -1,0 +1,33 @@
+function renderLogin() {
+    document.querySelector('#page').innerHTML=`
+        <section class='log-in'>
+            <div class="error"></div>
+            <form action="" onSubmit="login(event)">
+                <h2>Login:</h2>
+                <fieldset>
+                    <label for="">email</label>
+                    <input type="text" name="email">
+                </fieldset>
+                <fieldset>
+                    <label for="">password</label>
+                    <input type="password" name="password">
+                </fieldset>
+                <button>Login</button>
+            </form>
+           
+        </section>
+    `
+}
+
+function login(event) {
+    event.preventDefault()
+    const form = event.target
+    const data = Object.fromEntries(new FormData(form))
+    axios.post('/api/sessions',data)
+    .then(res=>res.data)
+    .then(userName=>console.log(userName))
+    .catch(error=>{
+        let errorDOM = document.querySelector('.login-in .error')
+        errorDOM.textContent = error.response.data.message
+    })
+}
